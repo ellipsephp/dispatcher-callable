@@ -10,6 +10,7 @@ use Interop\Http\Server\MiddlewareInterface;
 use Interop\Http\Server\RequestHandlerInterface;
 
 use Ellipse\Dispatcher\CallableMiddleware;
+use Ellipse\Dispatcher\Exceptions\MiddlewareResponseTypeException;
 
 describe('CallableMiddleware', function () {
 
@@ -29,18 +30,46 @@ describe('CallableMiddleware', function () {
 
     describe('->process()', function () {
 
-        it('should proxy the callable', function () {
+        context('when the callable returns an implementation of ResponseInterface', function () {
 
-            $request = mock(ServerRequestInterface::class)->get();
-            $response = mock(ResponseInterface::class)->get();
+            it('should proxy the callable', function () {
 
-            $handler = mock(RequestHandlerInterface::class)->get();
+                $request = mock(ServerRequestInterface::class)->get();
+                $response = mock(ResponseInterface::class)->get();
 
-            $this->callable->with($request, $handler)->returns($response);
+                $handler = mock(RequestHandlerInterface::class)->get();
 
-            $test = $this->middleware->process($request, $handler);
+                $this->callable->with($request, $handler)->returns($response);
 
-            expect($test)->toBe($response);
+                $test = $this->middleware->process($request, $handler);
+
+                expect($test)->toBe($response);
+
+            });
+
+        });
+
+        context('when the callable does not return an implementation of ResponseInterface', function () {
+
+            it('should throw a MiddlewareResponseTypeException', function () {
+
+                $request = mock(ServerRequestInterface::class)->get();
+
+                $handler = mock(RequestHandlerInterface::class)->get();
+
+                $this->callable->with($request, $handler)->returns('response');
+
+                $test = function () use ($request, $handler) {
+
+                    $this->middleware->process($request, $handler);
+
+                };
+
+                $exception = new MiddlewareResponseTypeException('response');
+
+                expect($test)->toThrow($exception);
+
+            });
 
         });
 

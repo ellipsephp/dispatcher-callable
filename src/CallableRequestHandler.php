@@ -7,6 +7,8 @@ use Psr\Http\Message\ResponseInterface;
 
 use Interop\Http\Server\RequestHandlerInterface;
 
+use Ellipse\Dispatcher\Exceptions\RequestHandlerResponseTypeException;
+
 class CallableRequestHandler implements RequestHandlerInterface
 {
     /**
@@ -31,9 +33,18 @@ class CallableRequestHandler implements RequestHandlerInterface
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @return \Psr\Http\Message\ResponseInterface
+     * @throws \Ellipse\Dispatcher\Exceptions\RequestHandlerResponseTypeException
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        return ($this->callable)($request);
+        $response = ($this->callable)($request);
+
+        if ($response instanceof ResponseInterface) {
+
+            return $response;
+
+        }
+
+        throw new RequestHandlerResponseTypeException($response);
     }
 }

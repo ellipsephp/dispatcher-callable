@@ -8,6 +8,8 @@ use Psr\Http\Message\ResponseInterface;
 use Interop\Http\Server\MiddlewareInterface;
 use Interop\Http\Server\RequestHandlerInterface;
 
+use Ellipse\Dispatcher\Exceptions\MiddlewareResponseTypeException;
+
 class CallableMiddleware implements MiddlewareInterface
 {
     /**
@@ -33,9 +35,18 @@ class CallableMiddleware implements MiddlewareInterface
      * @param \Psr\Http\Message\ServerRequestInterface      $request
      * @param \Interop\Http\Server\RequestHandlerInterface  $handler
      * @return \Psr\Http\Message\ResponseInterface
+     * @throws \Ellipse\Dispatcher\Exceptions\MiddlewareResponseTypeException
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        return ($this->callable)($request, $handler);
+        $response = ($this->callable)($request, $handler);
+
+        if ($response instanceof ResponseInterface) {
+
+            return $response;
+
+        }
+
+        throw new MiddlewareResponseTypeException($response);
     }
 }
