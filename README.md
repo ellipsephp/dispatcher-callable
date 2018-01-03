@@ -1,4 +1,4 @@
-# Dispatcher
+# Callable resolver
 
 This package provides factory producing instances of [ellipse/dispatcher](https://github.com/ellipsephp/dispatcher) resolving callables as middleware and request handler.
 
