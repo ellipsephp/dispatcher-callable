@@ -10,7 +10,7 @@ use Interop\Http\Server\MiddlewareInterface;
 use Interop\Http\Server\RequestHandlerInterface;
 
 use Ellipse\Dispatcher\CallableMiddleware;
-use Ellipse\Dispatcher\Exceptions\MiddlewareResponseTypeException;
+use Ellipse\Dispatcher\Exceptions\ResponseTypeException;
 
 describe('CallableMiddleware', function () {
 
@@ -51,7 +51,7 @@ describe('CallableMiddleware', function () {
 
         context('when the callable does not return an implementation of ResponseInterface', function () {
 
-            it('should throw a MiddlewareResponseTypeException', function () {
+            it('should throw a ResponseTypeException', function () {
 
                 $request = mock(ServerRequestInterface::class)->get();
 
@@ -65,7 +65,7 @@ describe('CallableMiddleware', function () {
 
                 };
 
-                $exception = new MiddlewareResponseTypeException('response');
+                $exception = new ResponseTypeException('response');
 
                 expect($test)->toThrow($exception);
 

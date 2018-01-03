@@ -8,7 +8,7 @@ use Psr\Http\Message\ResponseInterface;
 use Interop\Http\Server\MiddlewareInterface;
 use Interop\Http\Server\RequestHandlerInterface;
 
-use Ellipse\Dispatcher\Exceptions\MiddlewareResponseTypeException;
+use Ellipse\Dispatcher\Exceptions\ResponseTypeException;
 
 class CallableMiddleware implements MiddlewareInterface
 {
@@ -35,7 +35,7 @@ class CallableMiddleware implements MiddlewareInterface
      * @param \Psr\Http\Message\ServerRequestInterface      $request
      * @param \Interop\Http\Server\RequestHandlerInterface  $handler
      * @return \Psr\Http\Message\ResponseInterface
-     * @throws \Ellipse\Dispatcher\Exceptions\MiddlewareResponseTypeException
+     * @throws \Ellipse\Dispatcher\Exceptions\ResponseTypeException
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -47,6 +47,6 @@ class CallableMiddleware implements MiddlewareInterface
 
         }
 
-        throw new MiddlewareResponseTypeException($response);
+        throw new ResponseTypeException($response);
     }
 }

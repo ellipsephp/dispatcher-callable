@@ -9,7 +9,7 @@ use Psr\Http\Message\ResponseInterface;
 use Interop\Http\Server\RequestHandlerInterface;
 
 use Ellipse\Dispatcher\CallableRequestHandler;
-use Ellipse\Dispatcher\Exceptions\RequestHandlerResponseTypeException;
+use Ellipse\Dispatcher\Exceptions\ResponseTypeException;
 
 describe('CallableRequestHandler', function () {
 
@@ -48,7 +48,7 @@ describe('CallableRequestHandler', function () {
 
         context('when the callable does not return an implementation of ResponseInterface', function () {
 
-            it('should throw a RequestHandlerResponseTypeException', function () {
+            it('should throw a ResponseTypeException', function () {
 
                 $request = mock(ServerRequestInterface::class)->get();
                 $response = mock(ResponseInterface::class)->get();
@@ -61,7 +61,7 @@ describe('CallableRequestHandler', function () {
 
                 };
 
-                $exception = new RequestHandlerResponseTypeException('response');
+                $exception = new ResponseTypeException('response');
 
                 expect($test)->toThrow($exception);
 
