@@ -83,7 +83,7 @@ describe('CallableResolver', function () {
 
         context('when an iterable list of middleware is given', function () {
 
-            it('should proxy the delegate with the given itetable list of middleware wrapped into a callable middleware generator', function () {
+            it('should proxy the delegate with the given iterable list of middleware wrapped into a callable middleware generator', function () {
 
                 $test = function ($middleware) {
 
