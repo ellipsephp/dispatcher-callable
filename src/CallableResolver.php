@@ -15,7 +15,7 @@ class CallableResolver implements DispatcherFactoryInterface
     private $delegate;
 
     /**
-     * Set up a dispatcher factory resolving callables with the given delegate.
+     * Set up a callable resolver with the given delegate.
      *
      * @param \Ellipse\DispatcherFactoryInterface $delegate
      */
