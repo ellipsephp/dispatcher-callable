@@ -16,6 +16,7 @@ This package provides an `Ellipse\Dispatcher\CallableResolver` class implementin
 
 Once decorated, the resulting dispatcher factory can be used to produce instances of `Ellipse\Dispatcher` using callables as Psr-15 middleware and request handler.
 
+The callables must return an instance implementing `Psr\Http\Message\ResponseInterface`. Otherwise an `Ellipse\Dispatcher\Exceptions\ResponseTypeException` is thrown.
 
 ```php
 <?php
