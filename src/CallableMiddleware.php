@@ -4,9 +4,8 @@ namespace Ellipse\Dispatcher;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-
-use Interop\Http\Server\MiddlewareInterface;
-use Interop\Http\Server\RequestHandlerInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
 use Ellipse\Dispatcher\Exceptions\ResponseTypeException;
 
@@ -32,8 +31,8 @@ class CallableMiddleware implements MiddlewareInterface
     /**
      * Proxy the callable.
      *
-     * @param \Psr\Http\Message\ServerRequestInterface      $request
-     * @param \Interop\Http\Server\RequestHandlerInterface  $handler
+     * @param \Psr\Http\Message\ServerRequestInterface  $request
+     * @param \Psr\Http\Server\RequestHandlerInterface  $handler
      * @return \Psr\Http\Message\ResponseInterface
      * @throws \Ellipse\Dispatcher\Exceptions\ResponseTypeException
      */

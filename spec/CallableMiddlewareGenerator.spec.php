@@ -3,7 +3,7 @@
 use function Eloquent\Phony\Kahlan\stub;
 use function Eloquent\Phony\Kahlan\mock;
 
-use Interop\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\MiddlewareInterface;
 
 use Ellipse\Dispatcher\CallableMiddleware;
 use Ellipse\Dispatcher\CallableMiddlewareGenerator;
