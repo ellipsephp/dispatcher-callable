@@ -5,7 +5,7 @@ use function Eloquent\Phony\Kahlan\mock;
 
 use Psr\Http\Server\MiddlewareInterface;
 
-use Ellipse\Dispatcher\CallableMiddleware;
+use Ellipse\Middleware\CallableMiddleware;
 use Ellipse\Dispatcher\CallableMiddlewareGenerator;
 
 describe('CallableMiddlewareGenerator', function () {

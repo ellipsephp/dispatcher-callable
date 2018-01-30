@@ -4,6 +4,8 @@ namespace Ellipse\Dispatcher;
 
 use IteratorAggregate;
 
+use Ellipse\Middleware\CallableMiddleware;
+
 class CallableMiddlewareGenerator implements IteratorAggregate
 {
     /**
