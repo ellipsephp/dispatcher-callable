@@ -9,7 +9,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 use Ellipse\Dispatcher\CallableRequestHandler;
-use Ellipse\Dispatcher\Exceptions\ResponseTypeException;
 
 describe('CallableRequestHandler', function () {
 
@@ -29,43 +28,16 @@ describe('CallableRequestHandler', function () {
 
     describe('->process()', function () {
 
-        context('when the callable returns an implementation of ResponseInterface', function () {
+        it('should proxy the callable', function () {
 
-            it('should proxy the callable', function () {
+            $request = mock(ServerRequestInterface::class)->get();
+            $response = mock(ResponseInterface::class)->get();
 
-                $request = mock(ServerRequestInterface::class)->get();
-                $response = mock(ResponseInterface::class)->get();
+            $this->callable->with($request)->returns($response);
 
-                $this->callable->with($request)->returns($response);
+            $test = $this->handler->handle($request);
 
-                $test = $this->handler->handle($request);
-
-                expect($test)->toBe($response);
-
-            });
-
-        });
-
-        context('when the callable does not return an implementation of ResponseInterface', function () {
-
-            it('should throw a ResponseTypeException', function () {
-
-                $request = mock(ServerRequestInterface::class)->get();
-                $response = mock(ResponseInterface::class)->get();
-
-                $this->callable->with($request)->returns('response');
-
-                $test = function () use ($request) {
-
-                    $this->handler->handle($request);
-
-                };
-
-                $exception = new ResponseTypeException('response');
-
-                expect($test)->toThrow($exception);
-
-            });
+            expect($test)->toBe($response);
 
         });
 
