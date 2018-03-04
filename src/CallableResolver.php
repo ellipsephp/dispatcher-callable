@@ -4,6 +4,7 @@ namespace Ellipse\Dispatcher;
 
 use Ellipse\Dispatcher;
 use Ellipse\DispatcherFactoryInterface;
+use Ellipse\Middleware\CallableMiddleware;
 
 class CallableResolver implements DispatcherFactoryInterface
 {
@@ -25,23 +26,27 @@ class CallableResolver implements DispatcherFactoryInterface
     }
 
     /**
-     * Proxy the delegate by wrapping callable request handler and iterable list
-     * of middleware into callable resolvers.
+     * Proxy the delegate by wrapping callable request handler and callable
+     * middleware around the given request handler and middleware queue.
      *
-     * @param mixed     $handler
-     * @param iterable  $middleware
+     * @param mixed $handler
+     * @param array $middleware
      * @return \Ellipse\Dispatcher
      */
-    public function __invoke($handler, iterable $middleware = []): Dispatcher
+    public function __invoke($handler, array $middleware = []): Dispatcher
     {
-        $middleware = new CallableMiddlewareGenerator($middleware);
-
         if (is_callable($handler)) {
 
             $handler = new CallableRequestHandler($handler);
 
         }
 
-        return ($this->delegate)($handler, $middleware);
+        return ($this->delegate)($handler, array_map(function ($middleware) {
+
+            return is_callable($middleware)
+                ? new CallableMiddleware($middleware)
+                : $middleware;
+
+        }, $middleware));
     }
 }

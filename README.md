@@ -1,8 +1,8 @@
 # Callable resolver
 
-This package provides factory producing instances of [ellipse/dispatcher](https://github.com/ellipsephp/dispatcher) resolving callables as [Psr-15 middleware](https://www.php-fig.org/psr/psr-15/) and [Psr-15 request handler](https://www.php-fig.org/psr/psr-15/).
+This package provides factory producing instances of [ellipse/dispatcher](https://github.com/ellipsephp/dispatcher) resolving callables as [Psr-15](https://www.php-fig.org/psr/psr-15/) middleware and [Psr-15](https://www.php-fig.org/psr/psr-15/) request handler.
 
-**Require** php >= 7.1
+**Require** php >= 7.0
 
 **Installation** `composer require ellipse/dispatcher-callable`
 

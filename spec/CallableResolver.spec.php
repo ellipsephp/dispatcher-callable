@@ -7,7 +7,7 @@ use Ellipse\Dispatcher;
 use Ellipse\DispatcherFactoryInterface;
 use Ellipse\Dispatcher\CallableResolver;
 use Ellipse\Dispatcher\CallableRequestHandler;
-use Ellipse\Dispatcher\CallableMiddlewareGenerator;
+use Ellipse\Middleware\CallableMiddleware;
 
 describe('CallableResolver', function () {
 
@@ -65,13 +65,11 @@ describe('CallableResolver', function () {
 
         });
 
-        context('when no iterable list of middleware is given', function () {
+        context('when no middleware queue is given', function () {
 
-            it('should proxy the delegate with an empty array wrapped into a callable middleware generator', function () {
+            it('should proxy the delegate with an empty array', function () {
 
-                $generator = new CallableMiddlewareGenerator([]);
-
-                $this->delegate->__invoke->with('~', $generator)->returns($this->dispatcher);
+                $this->delegate->__invoke->with('~', [])->returns($this->dispatcher);
 
                 $test = ($this->factory)('handler');
 
@@ -81,31 +79,19 @@ describe('CallableResolver', function () {
 
         });
 
-        context('when an iterable list of middleware is given', function () {
+        context('when a middleware queue is given', function () {
 
-            it('should proxy the delegate with the given iterable list of middleware wrapped into a callable middleware generator', function () {
+            it('should proxy the delegate with CallableMiddleware wrapped around the callable values of the middleware queue', function () {
 
-                $test = function ($middleware) {
+                $callable = stub();
 
-                    $generator = new CallableMiddlewareGenerator($middleware);
+                $this->delegate->__invoke
+                    ->with('~', ['middleware', new CallableMiddleware($callable)])
+                    ->returns($this->dispatcher);
 
-                    $this->delegate->__invoke->with('~', $generator)->returns($this->dispatcher);
+                $test = ($this->factory)('handler', ['middleware', $callable]);
 
-                    $test = ($this->factory)('handler', $middleware);
-
-                    expect($test)->toBe($this->dispatcher);
-
-                };
-
-                $middleware = ['middleware1', 'middleware2'];
-
-                $test($middleware);
-                $test(new ArrayIterator($middleware));
-                $test(new class ($middleware) implements IteratorAggregate
-                {
-                    public function __construct($middleware) { $this->middleware = $middleware; }
-                    public function getIterator() { return new ArrayIterator($this->middleware); }
-                });
+                expect($test)->toBe($this->dispatcher);
 
             });
 
