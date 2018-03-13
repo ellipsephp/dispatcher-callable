@@ -1,6 +1,8 @@
 # Callable resolver
 
-This package provides factory producing instances of [ellipse/dispatcher](https://github.com/ellipsephp/dispatcher) resolving callables as [Psr-15](https://www.php-fig.org/psr/psr-15/) middleware and [Psr-15](https://www.php-fig.org/psr/psr-15/) request handler.
+This package provides a factory decorator for objects implementing `Ellipse\DispatcherFactoryInterface` from [ellipse/dispatcher](https://github.com/ellipsephp/dispatcher) package.
+
+The resulting factory can produce instances of `Ellipse\Dispatcher` using callables as [Psr-15](https://www.php-fig.org/psr/psr-15/) middleware and request handler.
 
 **Require** php >= 7.0
 
@@ -8,11 +10,11 @@ This package provides factory producing instances of [ellipse/dispatcher](https:
 
 **Run tests** `./vendor/bin/kahlan`
 
-- [Getting started](https://github.com/ellipsephp/dispatcher-callable#getting-started)
+- [Create a dispatcher using callables](https://github.com/ellipsephp/dispatcher-callable#create-a-dispatcher-using-callables)
 
-## Getting started
+## Create a dispatcher using callables
 
-This package provides an `Ellipse\Dispatcher\CallableResolver` class implementing `Ellipse\DispatcherFactoryInterface` which allows to decorate any other instance implementing this interface.
+This package provides an `Ellipse\Dispatcher\CallableResolver` class implementing `Ellipse\DispatcherFactoryInterface` which allows to decorate any other object implementing this interface.
 
 Once decorated, the resulting dispatcher factory can be used to produce instances of `Ellipse\Dispatcher` using callables as Psr-15 middleware and request handler.
 
