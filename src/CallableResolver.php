@@ -5,6 +5,7 @@ namespace Ellipse\Dispatcher;
 use Ellipse\Dispatcher;
 use Ellipse\DispatcherFactoryInterface;
 use Ellipse\Middleware\CallableMiddleware;
+use Ellipse\Handlers\CallableRequestHandler;
 
 class CallableResolver implements DispatcherFactoryInterface
 {

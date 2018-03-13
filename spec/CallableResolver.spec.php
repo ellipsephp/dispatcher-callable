@@ -6,8 +6,8 @@ use function Eloquent\Phony\Kahlan\mock;
 use Ellipse\Dispatcher;
 use Ellipse\DispatcherFactoryInterface;
 use Ellipse\Dispatcher\CallableResolver;
-use Ellipse\Dispatcher\CallableRequestHandler;
 use Ellipse\Middleware\CallableMiddleware;
+use Ellipse\Handlers\CallableRequestHandler;
 
 describe('CallableResolver', function () {
 
