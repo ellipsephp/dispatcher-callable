@@ -1,8 +1,6 @@
 # Callable resolver
 
-This package provides a factory decorator for objects implementing `Ellipse\DispatcherFactoryInterface` from [ellipse/dispatcher](https://github.com/ellipsephp/dispatcher) package.
-
-The resulting factory can produce instances of `Ellipse\Dispatcher` using callables as [Psr-15](https://www.php-fig.org/psr/psr-15/) middleware and request handler.
+This package provides a factory decorator for objects implementing `Ellipse\DispatcherFactoryInterface` from [ellipse/dispatcher](https://github.com/ellipsephp/dispatcher) package. It allows to produce instances of `Ellipse\Dispatcher` using callables as middleware and request handler.
 
 **Require** php >= 7.0
 
@@ -10,43 +8,44 @@ The resulting factory can produce instances of `Ellipse\Dispatcher` using callab
 
 **Run tests** `./vendor/bin/kahlan`
 
-- [Create a dispatcher using callables](https://github.com/ellipsephp/dispatcher-callable#create-a-dispatcher-using-callables)
+- [Create a dispatcher factory resolving callables](#create-a-dispatcher-factory-resolving-callables)
 
-## Create a dispatcher using callables
+## Create a dispatcher factory resolving callables
 
 This package provides an `Ellipse\Dispatcher\CallableResolver` class implementing `Ellipse\DispatcherFactoryInterface` which allows to decorate any other object implementing this interface.
 
-Once decorated, the resulting dispatcher factory can be used to produce instances of `Ellipse\Dispatcher` using callables as Psr-15 middleware and request handler.
+Once decorated, the resulting dispatcher factory can be used to produce instances of `Ellipse\Dispatcher` by resolving callables as `Ellipse\Middleware\CallableMiddleware` from the [ellipse/middleware-callable](https://github.com/ellipsephp/middleware-callable) package or as `Ellipse\Handlers\CallableRequestHandler` from the [ellipse/handlers-callable](https://github.com/ellipsephp/handlers-callable) package.
+
+`CallableMiddleware` and `CallableRequestHandler` logic is described on the [ellipse/middleware-callable](https://github.com/ellipsephp/middleware-callable#using-callables-as-middleware) and [ellipse/handlers-callable](https://github.com/ellipsephp/handlers-callable#using-callables-as-request-handlers) documentation pages.
 
 ```php
 <?php
 
 namespace App;
 
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+
 use Ellipse\DispatcherFactory;
 use Ellipse\Dispatcher\CallableResolver;
 
-// Get some incoming Psr-7 request.
-$request = some_psr7_request_factory();
-
-// Get a decorated dispatcher factory.
+// Decorate a DispatcherFactoryInterface implementation with a CallableResolver.
 $factory = new CallableResolver(new DispatcherFactory);
 
+// This callable acts as a middleware.
+$middleware = function (ServerRequestInterface $request, RequestHandlerInterface $handler) {
+
+    // ...
+
+}
+
+// This callable acts as a request handler.
+$handler = function (ServerRequestInterface $request) {
+
+    // ...
+
+}
+
 // A dispatcher using both callables and Psr-15 instances can now be created.
-$middleware = function ($request, $handler) {
-
-    // This callable behave like a Psr-15 middleware.
-
-};
-
-$handler = function ($request) {
-
-    // This callable behave like a Psr-15 request handler.
-
-};
-
 $dispatcher = $factory($handler, [$middleware, new SomeMiddleware]);
-
-// This works :-)
-$dispatcher->handle($request);
 ```
